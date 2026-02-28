@@ -7,13 +7,17 @@ REPO_URL="https://github.com/mbrell/c0admin.git"
 
 echo "c0admin installation starting..."
 
+echo "Installing system dependencies..."
+sudo apt-get install -y python3-venv python3-pip 2>/dev/null || {
+    echo "apt-get failed. Trying with sudo -S..."
+    echo "Please enter your sudo password:"
+    sudo -k apt-get install -y python3-venv python3-pip
+}
+
 if [ -d "$INSTALL_DIR" ]; then
    echo "Previous installation found. Removing..."
    rm -rf "$INSTALL_DIR"
 fi
-
-echo "Installing system dependencies..."
-sudo apt-get install -y python3-venv python3-pip
 
 echo "Downloading GitHub repository..."
 git clone "$REPO_URL" "$INSTALL_DIR"
