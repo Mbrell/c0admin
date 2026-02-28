@@ -1,35 +1,35 @@
 #!/bin/bash
+set -e
 INSTALL_DIR="$HOME/.c0admin"
 EXECUTABLE_NAME="c0admin"
 LAUNCHER_PATH="/usr/local/bin/$EXECUTABLE_NAME"
 REPO_URL="https://github.com/mbrell/c0admin.git"
+
 echo "c0admin installation starting..."
+
 if [ -d "$INSTALL_DIR" ]; then
    echo "Previous installation found. Removing..."
    rm -rf "$INSTALL_DIR"
 fi
+
+echo "Installing system dependencies..."
+sudo apt-get install -y python3-venv python3-pip
+
 echo "Downloading GitHub repository..."
 git clone "$REPO_URL" "$INSTALL_DIR"
+
 echo "Creating Python virtual environment..."
-if ! python3 -c "import ensurepip" &>/dev/null; then
-    echo "Installing python3-venv and pip..."
-    sudo apt-get install -y python3-venv python3-pip
-fi
 python3 -m venv "$INSTALL_DIR/venv"
-source "$INSTALL_DIR/venv/bin/activate"
-if [ -f "$INSTALL_DIR/requirements.txt" ]; then
-   echo "Installing packages..."
-   pip install -r "$INSTALL_DIR/requirements.txt"
-else
-   echo "requirements.txt not found. Installing packages with pip..."
-   pip install colorama pyperclip google-generativeai requests
-fi
-deactivate
+
+echo "Installing packages..."
+"$INSTALL_DIR/venv/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
+
 echo "Setting up $EXECUTABLE_NAME command..."
 sudo bash -c "cat > $LAUNCHER_PATH" << EOF
 #!/bin/bash
 "$INSTALL_DIR/venv/bin/python3" "$INSTALL_DIR/main.py"
 EOF
 sudo chmod +x "$LAUNCHER_PATH"
+
 echo "Installation completed!"
 echo "You can run the application by typing 'c0admin' in terminal."
