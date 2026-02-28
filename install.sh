@@ -11,13 +11,17 @@ fi
 echo "Downloading GitHub repository..."
 git clone "$REPO_URL" "$INSTALL_DIR"
 echo "Creating Python virtual environment..."
+if ! python3 -c "import ensurepip" &>/dev/null; then
+    echo "Installing python3-venv and pip..."
+    sudo apt-get install -y python3-venv python3-pip
+fi
 python3 -m venv "$INSTALL_DIR/venv"
 source "$INSTALL_DIR/venv/bin/activate"
 if [ -f "$INSTALL_DIR/requirements.txt" ]; then
    echo "Installing packages..."
    pip install -r "$INSTALL_DIR/requirements.txt"
 else
-   echo "requirements.txt not found. Installing 'colorama', 'pyperclip', 'google-generativeai' with pip..."
+   echo "requirements.txt not found. Installing packages with pip..."
    pip install colorama pyperclip google-generativeai requests
 fi
 deactivate
