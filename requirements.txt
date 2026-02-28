@@ -5,8 +5,8 @@ certifi==2025.6.15
 charset-normalizer==3.4.2
 colorama==0.4.6
 dotenv==0.9.9
-google-auth==2.40.3
-google-genai==1.23.0
+google-auth==2.48.0
+google-genai==1.62.0
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
