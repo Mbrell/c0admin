@@ -158,7 +158,7 @@ def generate():
 
             system_instruction_text = fetch_instruction_text(system_instruction_url)
 
-            model = "gemini-2.0-flash-lite"
+            model = "gemini-3-flash-preview"
             contents = [
                 types.Content(
                     role="user",
@@ -202,6 +202,7 @@ def generate():
                 log_history(answer_text)
                 stop_event.set()
                 t.join()
+                print()
     except KeyboardInterrupt:
         print("\nExiting..")
 
